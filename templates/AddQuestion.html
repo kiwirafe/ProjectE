@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Title</title>
+    </head>
+    <body>
+        {% block body %}
+        <div class="container">
+            <!--
+                This page allows the user to add a word
+                It collect information such as the maori word, translation and image
+            -->
+            <form class="needs-validation" action="{{ url_for('add_question') }}" method="post" enctype="multipart/form-data" novalidate>
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <br>
+                            <h6 class="text-center">Upload an image if possible</h6>
+                            <img id="show" height="312" width="100%" src="{{ url_for('static', filename=('download.png')) }}" alt="...">
+                            <div class="custom-file"> <!--Allows the user to upload an image-->
+                                <input type="file" class="custom-file-input" id="image" name="image" onchange="javascript:ShowImage()" accept="image/*">
+                                <label class="custom-file-label" for="image" style="text-align: left">
+                                    Select an image
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="stanard">Standard</label>
+                                    <select class="form-control" id="standard" name="standard">
+                                        {% for standard_id, number, name in standards %}
+                                            <option value="{{ standard_id }}">{{ number }} - {{ name }}</option>
+                                        {% endfor %}
+                                      </select>
+                                    <div class="invalid-feedback">Please fill this</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="question">Question</label>
+                                    <textarea class="form-control" id="question" name="question" rows="3" required></textarea>
+                                    <div class="invalid-feedback">Please fill this</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="answer">Answer</label>
+                                    <textarea class="form-control" id="answer" name="answer" rows="3" required></textarea>
+                                    <div class="invalid-feedback">Please fill this</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="answer">Source</label>
+                                    <input class="form-control" id="soruce" name="source" placeholder="2022 NCEA"></input>
+                                    <div class="invalid-feedback">Please fill this</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-block btn-success" type="submit">
+                    Add Question
+                </button>
+            </form>
+        </div>
+        <script>
+            // Show user the image after they upload it.
+            function ShowImage() {
+                const file = document.getElementById("image").files[0]
+                if (file) {
+                    document.getElementById("show").src = URL.createObjectURL(file)
+                }
+                var FileName = document.getElementById("image").value;
+                $('label[for="image"]').html(FileName);
+            }
+        </script>
+    {% endblock %}
+    </body>
+</html>

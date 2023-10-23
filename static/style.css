@@ -1,0 +1,29 @@
+body {
+  height: 100%;
+  background-color: #BFD7ED;
+}
+
+#nav {
+  max-width: 800px;
+  margin: 10px auto 30px auto;
+}
+
+.nav-link {
+  color: #03335D;
+}
+
+.nav-link:hover {
+  color: #51A2D5;
+}
+
+.was-validated .form-control:valid {
+    background-image: none !important;
+}
+
+.was-validated .form-control:invalid {
+    background-image: none !important;
+}
+
+.form-control.is-invalid{
+    background-image: none;
+}

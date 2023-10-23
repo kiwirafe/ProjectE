@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <title>Login</title>
+        <style>
+            #form {
+                max-width: 330px;
+                margin: 0 auto;
+            }
+            .container {
+                margin-top: 100px;
+            }
+        </style>
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+        <div class="container text-center">
+            <!-- This page allows the user to login-->
+            <h2>Please Login</h2><br>
+            <form id="form" class="needs-validation" action="{{ url_for('login') }}" method="post" novalidate>
+                <div class="form-group">
+                    <div class="mb-1">
+                        <input type="text" name="username" class="form-control {% if uerror %}is-invalid{% endif %}" placeholder="Username" required>
+                        <div class="invalid-feedback">
+                            {% if uerror %}
+                                Incorrect username
+                            {% else %}
+                                Please fill this!
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <div class="input-group has-validation">
+                            <input type="password" name="password" class="form-control {% if perror %}is-invalid{% endif %}" id="password" placeholder="Password" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-dark" type="button" id="TooltipPassword" onclick="javascript:ShowPassword();">
+                                    <i class="bi bi-eye-slash"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                {% if perror %}
+                                    Incorrect password
+                                {% else %}
+                                    Please fill this!
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block btn-primary" style="width: 100%">Login</button>
+            </form>
+            <br>
+            If you don't have an account yet, <a href="{{ url_for('signup') }}">Sign up</a>.
+        </div>
+        <script>
+            //$('input[name=next]').val(toString(document.referrer));
+
+            function ShowPassword() {
+                const PasswordType = document.getElementById("password");
+                if (PasswordType.type == "text") {
+                    PasswordType.type = "password";
+                    document.getElementById("TooltipPassword").innerHTML = "<i class='bi bi-eye-slash'></i>"
+                } else {
+                    PasswordType.type = "text";
+                    document.getElementById("TooltipPassword").innerHTML = "<i class='bi bi-eye'></i>"
+                }
+            }
+        </script>
+    {% endblock %}
+</body>
+</html>

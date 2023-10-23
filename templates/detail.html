@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+
+<head>
+    {% block head %}
+    <style>
+        button[aria-expanded=true] .bi-chevron-double-down {
+            display: none;
+        }
+        button[aria-expanded=false] .bi-chevron-double-up {
+            display: none;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}
+    <div class="container">
+        <div class="row" style="min-height: 60vh;">
+            <div class="col-md-5">
+                <button class="btn btn-block btn-outline-dark" onclick="javascript:ShowModal('{{ question[1] }}')">Response List</button>
+                <div class="card">
+                    {% if question[4] %}
+                    <img src="{{ url_for('static', filename=('images/' + question[4])) }}" class="card-img-top"
+                        style="max-height: 200px; max-width: 200px;" id="QuestionImage">
+                    {% else %}
+                    <img src="#" class="card-img-top" style="max-height: 200px; max-width: 200px;" id="QuestionImage"
+                        hidden>
+                    {% endif %}
+                    <div class="card-body">
+                        <p class="card-text" id="QuestionText">
+                            {% for line in question[2].split('\n') %}
+                                {{ line }}<br>
+                            {% endfor %}
+                        </p>
+                        <hr>
+                        <small class="card-text">Adapted from <span id="QuestionSource">{{ question [5] }}</span>
+                            examplar</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7" id="content">
+                <div class="card" id="response">
+                    <div class="card-body">
+                        <h5>Your Answers</h5>
+                        <div class="accordion">
+                            {% for id, response, score in queries %}
+                            <button class="btn btn-dark btn-block mt-1 d-flex justify-content-between" type="button"
+                                data-toggle="collapse" data-target="#id_{{ id }}" aria-expanded="false"
+                                aria-controls="id_{{ id }}" >
+                                Answer {{ loop.index }}
+                                <span>
+                                    {{ score | convert }} ({{ score }}%) 
+                                    <i id="icon" class="bi bi-chevron-double-down"></i>
+                                    <i id="icon" class="bi bi-chevron-double-up"></i>
+                                </span>
+                            </button>
+                            <div class="collapse" id="id_{{ id }}">
+                                <div class="card card-body">
+                                    <small>
+                                        {{ response }}
+                                    </small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                        <h5>Model Answer</h5>
+                        <small>{{ question[3] }}</small>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6"><a type="button" class="btn btn-block btn-warning"
+                                    href="{{ url_for('question', question_id=question[0]) }}">Redo this Question</a>
+                            </div>
+                            <div class="col-6"><button type="button" class="btn btn-block btn-primary"
+                                onclick="javascript:alert('This function is currently unavaliable')">Add this to Favourites</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalLabel">My Responses List</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card" style="width: 100%;" id="ModalContent">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function ShowModal(standard_id) {
+                var url = "{{ url_for('standard', standard_id='temp', fetch_type='detail') }}".replace('temp', standard_id)
+                $.get(url, function(data) {
+                    if (data.success == true) {
+                        $('#ModalContent').html(data.html);
+                        $('#modal').modal('toggle');
+                    }
+                });
+            }
+    
+        </script>
+    {% endblock %}
+</body>
+
+</html>

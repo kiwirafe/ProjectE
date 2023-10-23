@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+
+<head>
+</head>
+
+<body>
+    {% block body %}
+    <div class="container text-center">
+        <form class="needs-validation" action="{{ url_for('home') }}" method="post" novalidate>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="subjects">Subjects</label>
+                    <select class="form-control" id="subjects" required>
+                        <option selected disabled hidden value="">Please Select</option>
+                        {% for id, subject in subjects %}
+                        <option value="{{ id }}">{{ subject }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="levels">Level</label>
+                    <select class="form-control" id="levels" required>
+                        <option selected disabled hidden value="">Please Select</option>
+                        <option value="1">Level 1</option>
+                        <option value="2">Level 2</option>
+                        <option value="3">Level 3</option>
+                        <option value="4">Scholarship</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="standards">Standard</label>
+                    <select class="form-control" id="standards" name="standard" required>
+                        <option selected disabled hidden value="">Please Select</option>
+                        {% for id, number, name, subject, level in standards %}
+                        <option value="{{ id }}" data-subject="{{ subject }}" data-level="{{ level }}">
+                            {{ number }} {{ name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-block btn-success">
+                Start Testing
+            </button>
+        </form>
+        <hr>
+        <h5>Please send your feedback to this <a href="https://forms.gle/tsEjduN5V1fbgFJi6">Google Form</a></h5>
+        <h5><a href="{{ url_for('signup') }}">Sign up</a> or <a href="{{ url_for('login') }}">Login</a> to save your answers</h5>
+    </div>
+    <script>
+        $(document).on('change', "#subjects, #levels", function (e) {
+            let subject = $('#subjects').val();
+            let level = $('#levels').val();
+            $("#standards option").hide();
+            $("#standards option").filter(function () {
+                return ($(this).data("subject") == subject && $(this).data("level") == level)
+            }).show();
+        });
+
+        $('#standards').on('change', function (e) {
+            let subject = $(this).find(":selected").data("subject");
+            let level = $(this).find(":selected").data("level");
+            $("#subjects").val(subject).change();
+            $("#levels").val(level).change();
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <title>Sign Up</title>
+    <style>
+        #form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}
+    <div class="container text-center">
+        <!-- This page allows you to sign up-->
+        <h2>Sign Up</h2><br>
+        <!--This is the form to collect user's information, such as their
+                first name and last name-->
+        <form id="form" class="needs-validation" action="{{ url_for('signup') }}" method="POST"
+            oninput='confirm.setCustomValidity(confirm.value != password.value ? "Passwords do not match." : "")'
+            novalidate>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="firstname">First Name</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Archie"
+                        maxlength="100" required>
+                    <label class="invalid-feedback">Please fill this.</label>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Simpson"
+                        maxlength="100" required>
+                    <label class="invalid-feedback">Please fill this.</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="username">Username</label>
+                    <div class="input-group has-validation">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="TooltipPrepend">@</span>
+                        </div>
+                        <input type="text" class="form-control {% if uerror %}is-invalid{% endif %}" id="username"
+                            name="username" placeholder="rjs2574" aria-describedby="TooltipPrepend" maxlength="100"
+                            required>
+                        <div class="invalid-feedback">
+                            {% if uerror %} <!-- Display errors if necessary-->
+                            Username taken
+                            {% else %}
+                            Please fill this!
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control {% if eerror %}is-invalid{% endif %}" id="email"
+                        name="email" placeholder="ajs@icloud.com" maxlength="300" required>
+                    <div class="invalid-feedback">
+                        {% if eerror %}
+                        Email already registered
+                        {% else %}
+                        Email invalid
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="password">Password</label>
+                    <div class="input-group has-validation">
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Archie1234" pattern=".{8,}" maxlength="100" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-dark" type="button" id="TooltipPassword" maxlength="100"
+                                onclick="javascript:ShowPassword();">
+                                <i class="bi bi-eye-slash"></i>
+                            </button>
+                        </div>
+                        <div class="invalid-feedback">Must be more than 8 characters.</div>
+                    </div>
+
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="confirm">Confirm Password</label>
+                    <div class="input-group has-validation">
+                        <input type="password" class="form-control" id="confirm" name="confirm" placeholder="Archie1234"
+                            required>
+                        <div class="input-group-append">
+                            <button class="btn btn-dark" type="button" id="TooltipConfirm"
+                                onclick="javascript:ShowConfirm();">
+                                <i class="bi bi-eye-slash"></i>
+                            </button>
+                        </div>
+                        <div class="invalid-feedback">Passwords do not match</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-block btn-success" type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        // Show the password that the user typed if they click on the icon.
+        function ShowPassword() {
+            const PasswordType = document.getElementById("password");
+            if (PasswordType.type == "text") {
+                PasswordType.type = "password";
+                document.getElementById("TooltipPassword").innerHTML = "<i class='bi bi-eye-slash'></i>"
+            } else {
+                PasswordType.type = "text";
+                document.getElementById("TooltipPassword").innerHTML = "<i class='bi bi-eye'></i>"
+            }
+
+        }
+        function ShowConfirm() {
+            const PasswordType = document.getElementById("confirm");
+            if (PasswordType.type == "text") {
+                PasswordType.type = "password";
+                document.getElementById("TooltipConfirm").innerHTML = "<i class='bi bi-eye-slash'></i>"
+            } else {
+                PasswordType.type = "text";
+                document.getElementById("TooltipConfirm").innerHTML = "<i class='bi bi-eye'></i>"
+            }
+
+        }
+    </script>
+
+    {% endblock %}
+</body>
+
+</html>
