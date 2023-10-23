@@ -1,2 +1,2 @@
 # ProjectE
-Automatic Assessment System for NCEA | ScholarshipTechnology Project
+Automatic Assessment System for NCEA | Scholarship Technology Project
